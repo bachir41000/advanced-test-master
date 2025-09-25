@@ -1,0 +1,20 @@
+{
+  "name": "advanced-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "workspaces": [
+    "apps/api",
+    "apps/web"
+  ],
+  "scripts": {
+    "dev": "npm run -w apps/api dev & npm run -w apps/web dev",
+    "build": "npm -w apps/web run build",
+    "start": "npm run -w apps/api start & npm run -w apps/web preview"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^5.5.3"
+  },
+  "private": true
+}
