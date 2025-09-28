@@ -95,10 +95,10 @@ npm run -w apps/web test
 
 ## Choix et limites
 
-- On a gardé une architecture simple : pas de Redux, ni de librairies externes pour les requêtes.
-- `AuthContext` suffit pour centraliser la session et éviter les problèmes de 401.
-- `useApi` gère l’ajout du header d’authentification de manière basique sans interceptor avancé.
-- `useQuery` reste volontairement minimal, pas de cache global ni de refetch automatique.
-- Les tests couvrent les cas principaux (login, erreurs, chargement de produits).
-- L’accessibilité a été améliorée (labels, messages d’erreur lisibles).
+- L’architecture reste volontairement simple, pas de Redux ni de librairie externe de gestion de requêtes.  
+- `AuthContext` centralise la session et règle le problème initial du 401 après login.  
+- `useApi` ajoute l’en-tête d’authentification de façon basique sans logique avancée d’intercepteurs.  
+- `useQuery` est minimal : pas de cache global, pas de refetch automatique, mais facilement extensible.  
+- Les tests couvrent les cas essentiels : authentification, gestion des erreurs et affichage des produits.  
+- L’accessibilité a été soignée : labels explicites et messages d’erreur annoncés correctement.  
 
