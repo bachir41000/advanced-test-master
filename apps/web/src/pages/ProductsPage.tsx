@@ -12,22 +12,27 @@ export function ProductsPage({ user }: { user: { name: string } }) {
     [api]
   );
 
-  if (loading) return <div>Chargement…</div>;
+  if (loading) return <div role="status" aria-live="polite">Chargement…</div>;
   if (error)
     return (
       <div role="alert" aria-live="polite" style={{ color: "crimson" }}>
         {error.message}{" "}
-        <button onClick={refetch} style={{ marginLeft: 8 }}>
+        <button onClick={refetch} aria-label="Réessayer le chargement des produits" style={{ marginLeft: 8 }}>
           Réessayer
         </button>
       </div>
     );
 
+  const list = items || [];
+  if (list.length === 0) {
+    return <div>Aucun produit disponible.</div>;
+  }
+
   return (
     <>
       <h2>Produits</h2>
       <div className="grid">
-        {(items || []).map((p) => (
+        {list.map((p) => (
           <ProductCard key={p.id} p={p} />
         ))}
       </div>
