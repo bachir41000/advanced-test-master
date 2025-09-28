@@ -1,38 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import type { Product } from "../types";
 import { ProductCard } from "../components/ProductCard";
 import { useApi } from "../hooks/useApi";
+import { useQuery } from "../hooks/useQuery";
 
 export function ProductsPage({ user }: { user: { name: string } }) {
   const api = useApi();
-  const [items, setItems] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const r = await api.get<Product[]>("/products");
-        if (!cancelled) setItems(r);
-      } catch (e: any) {
-        if (!cancelled) setError(e?.message || "Erreur");
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [api]);
+  const { data: items, loading, error, refetch } = useQuery<Product[]>(
+    "products",
+    () => api.get<Product[]>("/products"),
+    [api]
+  );
 
   if (loading) return <div>Chargement…</div>;
   if (error)
     return (
       <div role="alert" aria-live="polite" style={{ color: "crimson" }}>
-        {error}
+        {error.message}{" "}
+        <button onClick={refetch} style={{ marginLeft: 8 }}>
+          Réessayer
+        </button>
       </div>
     );
 
@@ -40,7 +27,7 @@ export function ProductsPage({ user }: { user: { name: string } }) {
     <>
       <h2>Produits</h2>
       <div className="grid">
-        {items.map((p) => (
+        {(items || []).map((p) => (
           <ProductCard key={p.id} p={p} />
         ))}
       </div>
