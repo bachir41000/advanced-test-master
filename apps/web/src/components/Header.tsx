@@ -1,7 +1,8 @@
 import React from "react";
+import { useAuth } from "../auth/AuthContext";
 
-
-export function Header({ user, onLogout }: { user: { name: string } | null; onLogout: () => void }) {
+export function Header() {
+  const { user, logout } = useAuth();
   return (
     <header>
       <strong>Web Mal Designé</strong>
@@ -9,7 +10,7 @@ export function Header({ user, onLogout }: { user: { name: string } | null; onLo
         {user ? (
           <>
             <span style={{ marginRight: 8 }}>Bonjour {user.name}</span>
-            <button onClick={onLogout}>Se déconnecter</button>
+            <button onClick={logout}>Se déconnecter</button>
           </>
         ) : (
           <span className="small">non connecté</span>

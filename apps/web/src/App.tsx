@@ -1,41 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Header } from "./components/Header";
 import { LoginPage } from "./pages/LoginPage";
 import { ProductsPage } from "./pages/ProductsPage";
-import { api, setToken } from "./apiClient";
+import { AuthProvider, useAuth } from "./auth/AuthContext";
 
-export default function App() {
-  const [user, setUser] = useState<{ name: string; email: string } | null>(null);
-  const [ready, setReady] = useState(false);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const me = await api.me();
-        setUser(me);
-      } catch {}
-      setReady(true);
-    })();
-  }, []);
-
-
-  const onLogout = () => {
-    setToken(null);
-    setUser(null);
-  };
-
-  if (!ready) return <div>Boot…</div>;
+function AppBody() {
+  const { user, loading } = useAuth();
+  if (loading) return <div>Chargement...</div>;
 
   return (
     <>
-      <Header user={user} onLogout={onLogout} />
+      <Header />
       <main>
-        {user ? (
-          <ProductsPage user={user} />
-        ) : (
-          <LoginPage onLogged={(u) => setUser(u)} />
-        )}
+        {user ? <ProductsPage user={user} /> : <LoginPage />}
       </main>
     </>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <AppBody />
+    </AuthProvider>
   );
 }
