@@ -3,8 +3,11 @@ import type { Product } from "../types";
 import { ProductCard } from "../components/ProductCard";
 import { useApi } from "../hooks/useApi";
 import { useQuery } from "../hooks/useQuery";
+import { useAuth } from "../auth/AuthContext";
 
-export function ProductsPage({ user }: { user: { name: string } }) {
+export function ProductsPage() {
+  const { user } = useAuth();
+  if (!user) return null;
   const api = useApi();
   const { data: items, loading, error, refetch } = useQuery<Product[]>(
     "products",

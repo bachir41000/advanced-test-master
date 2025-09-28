@@ -12,7 +12,7 @@ function AppBody() {
     <>
       <Header />
       <main>
-        {user ? <ProductsPage user={user} /> : <LoginPage />}
+        {user ? <ProductsPage /> : <LoginPage />}
       </main>
     </>
   );
